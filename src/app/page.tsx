@@ -33,12 +33,29 @@ export default function Home() {
         </div>
 
       </div>
-      <div className="w-[33%]">
+      <div className="w-[26%]">
+        <nav className="flex flex-col mb-4" aria-label="Breadcrumb">
+          <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse text-xs">
+            <li className="inline-flex items-center">
+              <a href="#" className="text-xs inline-flex items-center font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-gray-600">
+                Home
+              </a>
+            </li>
+            <li>
+              <div className="flex items-center">
+                /
+                <a href="#" className="ms-1 text-xs font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-gray-600">Projects</a>
+              </div>
+            </li>
+          </ol>
+          <p className="mt-2 text-xs font-semibold text-gray-700">Sales BDE</p>
+        </nav>
+
         <div className="shadow-xl bg-white rounded-xl py-2">
           <div className="px-2">
             <ul className="flex justify-between items-center mb-4">
               <li className="font-semibold text-gray-700">Sales BDE</li>
-              <li className="flex justify-between items-center gap-2"><span className="text-[#2ea041] text-sm font-bold">Active</span> <FaPencilAlt className="text-[12px] shadow-lg shadow-gray-200 rounded-lg" /></li>
+              <li className="flex justify-between items-center gap-4"><span className="text-[#2ea041] text-sm font-bold">Active</span> <FaPencilAlt className="text-[12px] drop-shadow-lg rounded-lg" /></li>
             </ul>
             <ul className="flex justify-between items-center text-xs mb-2">
               <li className="text-gray-500 font-semibold">Assignment Link</li>
@@ -100,7 +117,71 @@ export default function Home() {
 
         </div>
       </div>
-      <div></div>
+      <div className="w-[56%] flex justify-between items-start shadow-lg p-2 rounded-xl">
+        <div className="w-1/2">
+          <div className="">
+            <div className="flex justify-between items-center w-full">
+              <div className="flex items-center justify-start gap-2">
+                <Image className="w-10 h-10 rounded-xl" src={GirlProfile} alt="Profile photo" width={50} height={50} />
+                <p className="flex flex-col justify-between items-start">
+                  <span className="text-xs font-semibold">Saurav Singh</span>
+                  <span className="text-[14px] text-gray-500">saurav@gmail.com</span>
+                </p>
+              </div>
+              <p className="py-4 text-green-500 font-semibold">
+                78%
+              </p>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between gap-4">
+                <p className="text-xs font-semibold text-gray-500">Behavioural</p>
+                <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-200">
+                  <div className="bg-green-500 h-2 rounded-full" style={{ width: '45%' }} ></div>
+                </div>
+                <p className="text-xs text-green-500 font-semibold">9/10</p>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <p className="text-xs font-semibold text-gray-500">Communication</p>
+                <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-200">
+                  <div className="bg-green-500 h-2 rounded-full" style={{ width: '45%' }} ></div>
+                </div>
+                <p className="text-xs text-green-500 font-semibold">9/10</p>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <p className="text-xs font-semibold text-gray-500">Situation handling</p>
+                <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-200">
+                  <div className="bg-green-500 h-2 rounded-full" style={{ width: '45%' }} ></div>
+                </div>
+                <p className="text-xs text-[#ecb22e] font-semibold">6/10</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col justify-start items-start gap-4 mt-6">
+            <div className="flex flex-col justify-start items-start">
+              <h3 className="text-sm font-semibold text-gray-800">About</h3>
+              <p className="text-xs text-gray-500">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed dicta tenetur officiis amet.</p>
+            </div>
+            <div className="flex flex-col justify-start items-start">
+              <h3 className="text-sm font-semibold text-gray-800">Experience</h3>
+              <p className="text-xs text-gray-500">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed dicta tenetur officiis amet.</p>
+            </div>
+            <div className="flex flex-col justify-start items-start">
+              <h3 className="text-sm font-semibold text-gray-800">Hobbies</h3>
+              <p className="text-xs text-gray-500">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed dicta tenetur officiis amet.</p>
+            </div>
+            <div className="flex flex-col justify-start items-start">
+              <h3 className="text-sm font-semibold text-gray-800">Introduction</h3>
+              <p className="text-xs text-gray-500">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed dicta tenetur officiis amet.</p>
+            </div>
+            <button className="text-white bg-[#1ec3b3] text-sm font-semibold px-28 py-2 rounded-xl my-6 text-center m-auto">SHORTLIST</button>
+          </div>
+          <div>
+          </div>
+        </div>
+        <div className="flex justify-end items-end">
+          <Image src={GirlProfile} alt="Image" className="rounded-lg min-h-[80vh] object-fill w-[94%] text-right block" />
+        </div>
+      </div>
     </main>
   );
 }
