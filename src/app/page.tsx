@@ -108,7 +108,7 @@ export default function Home() {
       <SideBar />
       {/*  */}
       <div className="flex flex-col justify-start items-start w-[84%]">
-        <BreadCrumb/>
+        <BreadCrumb />
         <div className="flex items-start justify-start gap-4">
           <div className="min-w-[30%]">
             <div className="shadow-xl bg-white rounded-xl py-2">
@@ -261,7 +261,7 @@ export default function Home() {
                             )
                           }
                         })
-                      ) : <h1>No Shortlisted Candidates</h1>}
+                      ) : isShortlistedActive && <h1>No Shortlisted Candidates</h1>}
                     </tbody>
                   </table>
                 </div>
@@ -286,7 +286,7 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center justify-between gap-4">
-                    <p className="text-xs font-semibold text-gray-500">Behavioural</p>
+                    <p className="text-xs font-semibold text-gray-500">Behavioral</p>
                     <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-200">
                       <div className={`${progressColor(selectedCandidate.behavioral)} h-2 rounded-full`} style={{ width: `${(selectedCandidate.behavioral / 10) * 100}%` }} ></div>
                     </div>
@@ -330,7 +330,7 @@ export default function Home() {
               <div>
               </div>
             </div>}
-            <div className="flex justify-end items-end w-1/2">
+            <div className="">
               <Image src={GirlProfile} alt="Image" className="rounded-lg min-h-[80vh] object-fill w-full] text-right block" />
             </div>
           </div>
