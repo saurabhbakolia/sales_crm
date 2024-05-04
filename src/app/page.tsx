@@ -196,23 +196,23 @@ export default function Home() {
                   <div className="flex items-center justify-between gap-4">
                     <p className="text-xs font-semibold text-gray-500">Behavioural</p>
                     <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-200">
-                      <div className="bg-green-500 h-2 rounded-full" style={{ width: '45%' }} ></div>
+                      <div className={`bg-${progressColor(selectedCandidate.behavioral)}-500 h-2 rounded-full`} style={{ width: `${(selectedCandidate.behavioral/10)*100}%` }} ></div>
                     </div>
-                    <p className="text-xs text-green-500 font-semibold">{selectedCandidate.behavioral}/10</p>
+                    <p className={`text-xs text-${progressColor(selectedCandidate.behavioral)}-400 font-semibold`}>{selectedCandidate.behavioral}/10</p>
                   </div>
                   <div className="flex items-center justify-between gap-4">
                     <p className="text-xs font-semibold text-gray-500">Communication</p>
                     <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-200">
-                      <div className="bg-green-500 h-2 rounded-full" style={{ width: '45%' }} ></div>
+                      <div className={`bg-${progressColor(selectedCandidate.communication)}-500 h-2 rounded-full`} style={{ width: `${(selectedCandidate.communication/10)*100}%` }} ></div>
                     </div>
-                    <p className="text-xs text-green-500 font-semibold">{selectedCandidate.communication}/10</p>
+                    <p className={`text-xs text-${progressColor(selectedCandidate.communication)}-400 font-semibold`}>{selectedCandidate.communication}/10</p>
                   </div>
                   <div className="flex items-center justify-between gap-4">
                     <p className="text-xs font-semibold text-gray-500">Situation handling</p>
                     <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-200">
-                      <div className="bg-green-500 h-2 rounded-full" style={{ width: '45%' }} ></div>
+                      <div className={`bg-${progressColor(selectedCandidate.situation_handling)}-500 h-2 rounded-full`} style={{ width: `${(selectedCandidate.situation_handling/10)*100}%` }} ></div>
                     </div>
-                    <p className="text-xs text-[#ecb22e] font-semibold">{selectedCandidate.situation_handling}/10</p>
+                    <p className={`text-xs text-${progressColor(selectedCandidate.situation_handling)}-400 font-semibold`}>{selectedCandidate.situation_handling}/10</p>
                   </div>
                 </div>
               </div>
@@ -246,4 +246,14 @@ export default function Home() {
       </div>
     </main>
   );
-}
+};
+
+const progressColor = (scale: number) => {
+  if (scale <= 4) {
+    return "red";
+  } else if (scale <= 7) {
+    return "yellow";
+  } else {
+    return "green";
+  }
+};
