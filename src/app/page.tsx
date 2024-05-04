@@ -10,6 +10,7 @@ import Image from "next/image";
 import GirlProfile from '../../public/girl.jpg';
 import { useEffect, useState } from "react";
 import { users } from '../app/data/user';
+import { randomInt } from "crypto";
 
 
 interface CandidateData {
@@ -51,25 +52,40 @@ export default function Home() {
   const [isReviewActive, setIsReviewActive] = useState(true);
   const [isShortlistedActive, setIsShortlistedActive] = useState(false);
 
-
   useEffect(() => {
-    handleSelectedCandidate(1);
-
-    // Add Review Candidates
-    candidates.map((candidate) => {
-      setToReviewCandidates(reviewCandidate => [...reviewCandidate, parseInt(candidate.id)]);
-    });
+    handleSelectedCandidate(Math.floor(Math.random() * 19) + 1);
+    const newCandidates: number[] = [];
+    for (let i = 0; i < candidates.length; i++) {
+      newCandidates.push(parseInt(candidates[i].id));
+    }
+    setToReviewCandidates(newCandidates);
   }, [candidates]);
 
+  useEffect(() => {
+    // candidates.forEach(candidate => {
+    //   const newCandidates = [];
+    //   if (!shortListedCandidates.includes(parseInt(candidate.id))) {
+    //     newCandidates.push(parseInt(candidate.id));
+    //     setToReviewCandidates(newCandidates);
+    //   }
+    // });
+    console.log(toReviewCandidates);
+  }, [shortListedCandidates]);
+
   const handleSelectedCandidate = (index: number) => {
-    console.log("candidate:", index);
     setSelectedCandidate(candidates[index]);
-    console.log(selectedCandidate);
   };
 
   const handleShortListCandidate = (index: number) => {
-    setShortListedCandidates(prevCandidate => [...prevCandidate, index]);
-    console.log(shortListedCandidates);
+    if(index<20) handleSelectedCandidate(index);
+    const oldShortListed = shortListedCandidates;
+    oldShortListed.push(index);
+    setShortListedCandidates(oldShortListed);
+    console.log("ShortListedCandidate Change: ", shortListedCandidates);
+    const newReviewCandidates = toReviewCandidates.filter((id) => id !== index);
+    console.log("NEW",newReviewCandidates);
+    setToReviewCandidates(() => newReviewCandidates);
+    console.log("TO",toReviewCandidates);
   };
 
   const handleReviewClick = () => {
@@ -182,23 +198,48 @@ export default function Home() {
                 <div className="w-full h-80 overflow-scroll">
                   <table className="w-full text-sm mt-2 overflow-scroll">
                     <tbody className="w-full">
-                      {candidates.map((candidate: { name: string, email: string, score: number, id: string, avatar: string }, index: number) => {
-                        const id = candidate.id; // Add this line to declare the 'id' variable
-                        return (
-                          <tr key={index} className="hover:bg-gray-200 cursor-pointer transition-all duration-75 w-full flex  justify-between items-center px-3" onClick={() => handleSelectedCandidate(parseInt(id))}>
-                            <th scope="row" className="py-3 font-medium whitespace-nowrap flex justify-start items-center gap-2">
-                              <Image className="w-10 h-10 rounded-xl" src={candidate.avatar} alt="Profile photo" width={50} height={50} />
-                              <p className="flex flex-col justify-between items-start">
-                                <span className="text-xs font-semibold">{candidate.name}</span>
-                                <span className="text-[14px] text-gray-500">{candidate.email}</span>
-                              </p>
-                            </th>
-                            <td className={`py-4 text-${progressColor(candidate.score % 100)}-500 font-semibold`}>
-                              {candidate.score % 100}%
-                            </td>
-                          </tr>
-                        );
-                      })}
+                      {isReviewActive && toReviewCandidates.length && (
+                        toReviewCandidates.map((candidate: number) => {
+                          const foundCandidate = candidates.find((c) => parseInt(c.id) === candidate);
+                          if (foundCandidate) {
+                            return (
+                              <tr key={foundCandidate.id} className="hover:bg-gray-200 cursor-pointer transition-all duration-75 w-full flex  justify-between items-center px-3" onClick={() => handleSelectedCandidate(parseInt(foundCandidate.id)-1)}>
+                                <th scope="row" className="py-3 font-medium whitespace-nowrap flex justify-start items-center gap-2">
+                                  <Image className="w-10 h-10 rounded-xl" src={foundCandidate.avatar} alt="Profile photo" width={50} height={50} />
+                                  <p className="flex flex-col justify-between items-start">
+                                    <span className="text-xs font-semibold">{foundCandidate.name}</span>
+                                    <span className="text-[14px] text-gray-500">{foundCandidate.email}</span>
+                                  </p>
+                                </th>
+                                <td className={`py-4 text-${progressColor(foundCandidate.score % 100)}-500 font-semibold`}>
+                                  {foundCandidate.score % 100}%
+                                </td>
+                              </tr>
+                            )
+                          }
+                        })
+                      )}
+                      {isShortlistedActive && shortListedCandidates.length && (
+                        shortListedCandidates.map((candidate: number) => {
+                          const foundCandidate = candidates.find((c) => parseInt(c.id) === candidate);
+                          if (foundCandidate) {
+                            return (
+                              <tr key={foundCandidate.id} className="hover:bg-gray-200 cursor-pointer transition-all duration-75 w-full flex  justify-between items-center px-3" onClick={() => handleSelectedCandidate(parseInt(foundCandidate.id))}>
+                                <th scope="row" className="py-3 font-medium whitespace-nowrap flex justify-start items-center gap-2">
+                                  <Image className="w-10 h-10 rounded-xl" src={foundCandidate.avatar} alt="Profile photo" width={50} height={50} />
+                                  <p className="flex flex-col justify-between items-start">
+                                    <span className="text-xs font-semibold">{foundCandidate.name}</span>
+                                    <span className="text-[14px] text-gray-500">{foundCandidate.email}</span>
+                                  </p>
+                                </th>
+                                <td className={`py-4 text-${progressColor(foundCandidate.score % 100)}-500 font-semibold`}>
+                                  {foundCandidate.score % 100}%
+                                </td>
+                              </tr>
+                            )
+                          }
+                        })
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -262,7 +303,7 @@ export default function Home() {
                   <h3 className="text-sm font-semibold text-gray-800">Introduction</h3>
                   <p className="text-xs text-gray-500">{selectedCandidate.introduction}</p>
                 </div>
-                <button className="text-white bg-[#1ec3b3] text-sm font-semibold px-28 py-2 rounded-xl my-6 text-center m-auto">SHORTLIST</button>
+                <button className="text-white bg-[#1ec3b3] text-sm font-semibold px-28 py-2 rounded-xl my-6 text-center m-auto" onClick={() => handleShortListCandidate(parseInt(selectedCandidate.id))}>SHORTLIST</button>
               </div>
               <div>
               </div>
