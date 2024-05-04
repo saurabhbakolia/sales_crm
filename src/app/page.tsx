@@ -72,12 +72,12 @@ export default function Home() {
           <FaHome className="text-[#5ad4c9] text-lg" />
           <span>Dashboard</span>
         </button>
-        <div className="max-w-xs p-3 bg-white border border-gray-200 rounded-2xl shadow dark:bg-[#5ad4c9] dark:border-[#5ad4c9]">
+        <div className="max-w-xs p-3 rounded-2xl shadow bg-[#5ad4c9] border-[#5ad4c9]">
           <button type="button" className="text-gray-500 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-xl text-sm px-3 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 me-2 mb-2">
             <FaPlus className="text-2xl" />
           </button>
           <a href="#">
-            <h5 className="mb-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-white">New Assignment?</h5>
+            <h5 className="mb-2 text-lg font-semibold tracking-tight text-white dark:text-white">New Assignment?</h5>
           </a>
           <p className="mb-3 font-normal text-white text-xs">Select from pre-defined questions to have a quick turnaround.</p>
           <a href="#" className="inline-block items-center px-1 py-3 text-xs text-center bg-white text-gray-700 font-semibold rounded-2xl w-full">
@@ -105,7 +105,7 @@ export default function Home() {
               <p className="mt-2 text-xs font-semibold text-gray-700">Sales BDE</p>
         </nav>
         <div className="flex items-start justify-start gap-4">
-          <div className="w-[30%]">
+          <div className="min-w-[30%]">
             <div className="shadow-xl bg-white rounded-xl py-2">
               <div className="px-2">
                 <ul className="flex justify-between items-center mb-4">
@@ -177,7 +177,7 @@ export default function Home() {
 
             </div>
           </div>
-          <div className="w-[66%] flex justify-between items-start shadow-lg p-2 rounded-xl gap-6">
+          <div className="min-w-[66%] flex justify-between items-start shadow-lg p-2 rounded-xl gap-6">
             {selectedCandidate && <div className="w-1/2">
               <div className="">
                 <div className="flex justify-between items-center w-full">
