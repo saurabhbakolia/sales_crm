@@ -51,6 +51,8 @@ export default function Home() {
   const [toReviewCandidates, setToReviewCandidates] = useState<number[]>([]);
   const [isReviewActive, setIsReviewActive] = useState(true);
   const [isShortlistedActive, setIsShortlistedActive] = useState(false);
+  const [isLoadingCandidates, setIsLoadingCandidate] = useState(true);
+  const [isLoadingSelectedCandidate, setIsLoadingSelectedCandidate] = useState(true);
 
   useEffect(() => {
     handleSelectedCandidate(Math.floor(Math.random() * 19) + 1);
@@ -60,6 +62,12 @@ export default function Home() {
     }
     setToReviewCandidates(newCandidates);
   }, [candidates]);
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      setIsLoadingCandidate(true);
+    }, 200);
+  }, [toReviewCandidates]);
 
   useEffect(() => {
     // candidates.forEach(candidate => {
@@ -77,15 +85,15 @@ export default function Home() {
   };
 
   const handleShortListCandidate = (index: number) => {
-    if(index<20) handleSelectedCandidate(index);
+    if (index < 20) handleSelectedCandidate(index);
     const oldShortListed = shortListedCandidates;
     oldShortListed.push(index);
     setShortListedCandidates(oldShortListed);
     console.log("ShortListedCandidate Change: ", shortListedCandidates);
     const newReviewCandidates = toReviewCandidates.filter((id) => id !== index);
-    console.log("NEW",newReviewCandidates);
+    console.log("NEW", newReviewCandidates);
     setToReviewCandidates(() => newReviewCandidates);
-    console.log("TO",toReviewCandidates);
+    console.log("TO", toReviewCandidates);
   };
 
   const handleReviewClick = () => {
@@ -198,12 +206,12 @@ export default function Home() {
                 <div className="w-full h-80 overflow-scroll">
                   <table className="w-full text-sm mt-2 overflow-scroll">
                     <tbody className="w-full">
-                      {isReviewActive && toReviewCandidates.length && (
+                      {isReviewActive && toReviewCandidates.length && isLoadingCandidates ? (
                         toReviewCandidates.map((candidate: number) => {
                           const foundCandidate = candidates.find((c) => parseInt(c.id) === candidate);
                           if (foundCandidate) {
                             return (
-                              <tr key={foundCandidate.id} className="hover:bg-gray-200 cursor-pointer transition-all duration-75 w-full flex  justify-between items-center px-3" onClick={() => handleSelectedCandidate(parseInt(foundCandidate.id)-1)}>
+                              <tr key={foundCandidate.id} className="hover:bg-gray-200 cursor-pointer transition-all duration-75 w-full flex  justify-between items-center px-3" onClick={() => handleSelectedCandidate(parseInt(foundCandidate.id) - 1)}>
                                 <th scope="row" className="py-3 font-medium whitespace-nowrap flex justify-start items-center gap-2">
                                   <Image className="w-10 h-10 rounded-xl" src={foundCandidate.avatar} alt="Profile photo" width={50} height={50} />
                                   <p className="flex flex-col justify-between items-start">
@@ -218,8 +226,66 @@ export default function Home() {
                             )
                           }
                         })
-                      )}
-                      {isShortlistedActive && shortListedCandidates.length && (
+                      ) :
+                        <div role="status" className="max-w-sm p-4 border border-gray-200 rounded shadow animate-pulse md:p-2 dark:border-gray-700 gap-1 flex flex-col">
+                          <div className="flex items-center mt-1">
+                            <svg className="w-10 h-10 me-3 text-gray-200 dark:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
+                            </svg>
+                            <div>
+                              <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2"></div>
+                              <div className="w-48 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                            </div>
+                          </div>
+                          <div className="flex items-center mt-1">
+                            <svg className="w-10 h-10 me-3 text-gray-200 dark:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
+                            </svg>
+                            <div>
+                              <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2"></div>
+                              <div className="w-48 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                            </div>
+                          </div>
+                          <div className="flex items-center mt-1">
+                            <svg className="w-10 h-10 me-3 text-gray-200 dark:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
+                            </svg>
+                            <div>
+                              <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2"></div>
+                              <div className="w-48 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                            </div>
+                          </div>
+                          <div className="flex items-center mt-1">
+                            <svg className="w-10 h-10 me-3 text-gray-200 dark:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
+                            </svg>
+                            <div>
+                              <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2"></div>
+                              <div className="w-48 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                            </div>
+                          </div>
+                          <div className="flex items-center mt-1">
+                            <svg className="w-10 h-10 me-3 text-gray-200 dark:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
+                            </svg>
+                            <div>
+                              <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2"></div>
+                              <div className="w-48 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                            </div>
+                          </div>
+                          <div className="flex items-center mt-1">
+                            <svg className="w-10 h-10 me-3 text-gray-200 dark:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
+                            </svg>
+                            <div>
+                              <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2"></div>
+                              <div className="w-48 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                            </div>
+                          </div>
+                          <span className="sr-only">Loading...</span>
+                        </div>
+                      }
+                      {isShortlistedActive && shortListedCandidates.length ? (
                         shortListedCandidates.map((candidate: number) => {
                           const foundCandidate = candidates.find((c) => parseInt(c.id) === candidate);
                           if (foundCandidate) {
@@ -239,7 +305,7 @@ export default function Home() {
                             )
                           }
                         })
-                      )}
+                      ): <h1>No Shortlisted Candidates</h1>}
                     </tbody>
                   </table>
                 </div>
@@ -247,7 +313,7 @@ export default function Home() {
 
             </div>
           </div>
-          <div className="min-w-[66%] flex justify-between items-start shadow-lg p-2 rounded-xl gap-6">
+          <div className="min-w-[66%] flex justify-between items-start shadow-lg bg-white p-2 rounded-xl gap-6">
             {selectedCandidate && <div className="w-1/2">
               <div className="">
                 <div className="flex justify-between items-center w-full">
