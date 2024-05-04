@@ -46,10 +46,19 @@ const dummyUserData: CandidateData = {
 export default function Home() {
   const [candidates, setCandidates] = useState(users);
   const [selectedCandidate, setSelectedCandidate] = useState<CandidateData>(dummyUserData);
+  const [shortListedCandidates, setShortListedCandidates] = useState<number[]>([]);
+  const [toReviewCandidates, setToReviewCandidates] = useState<number[]>([]);
+  const [isReviewActive, setIsReviewActive] = useState(true);
+  const [isShortlistedActive, setIsShortlistedActive] = useState(false);
 
 
   useEffect(() => {
     handleSelectedCandidate(1);
+
+    // Add Review Candidates
+    candidates.map((candidate) => {
+      setToReviewCandidates(reviewCandidate => [...reviewCandidate, parseInt(candidate.id)]);
+    });
   }, [candidates]);
 
   const handleSelectedCandidate = (index: number) => {
@@ -57,6 +66,22 @@ export default function Home() {
     setSelectedCandidate(candidates[index]);
     console.log(selectedCandidate);
   };
+
+  const handleShortListCandidate = (index: number) => {
+    setShortListedCandidates(prevCandidate => [...prevCandidate, index]);
+    console.log(shortListedCandidates);
+  };
+
+  const handleReviewClick = () => {
+    setIsReviewActive(true);
+    setIsShortlistedActive(false);
+  };
+
+  const handleShortlistedClick = () => {
+    setIsReviewActive(false);
+    setIsShortlistedActive(true);
+  };
+
 
 
 
@@ -89,20 +114,20 @@ export default function Home() {
       {/*  */}
       <div className="flex flex-col justify-start items-start w-[84%]">
         <nav className="flex flex-col mb-4" aria-label="Breadcrumb">
-              <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse text-xs">
-                <li className="inline-flex items-center">
-                  <a href="#" className="text-xs inline-flex items-center font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-gray-600">
-                    Home
-                  </a>
-                </li>
-                <li>
-                  <div className="flex items-center">
-                    /
-                    <a href="#" className="ms-1 text-xs font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-gray-600">Projects</a>
-                  </div>
-                </li>
-              </ol>
-              <p className="mt-2 text-xs font-semibold text-gray-700">Sales BDE</p>
+          <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse text-xs">
+            <li className="inline-flex items-center">
+              <a href="#" className="text-xs inline-flex items-center font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-gray-600">
+                Home
+              </a>
+            </li>
+            <li>
+              <div className="flex items-center">
+                /
+                <a href="#" className="ms-1 text-xs font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-gray-600">Projects</a>
+              </div>
+            </li>
+          </ol>
+          <p className="mt-2 text-xs font-semibold text-gray-700">Sales BDE</p>
         </nav>
         <div className="flex items-start justify-start gap-4">
           <div className="min-w-[30%]">
@@ -128,12 +153,16 @@ export default function Home() {
 
 
               <div className="flex justify-start items-center gap-6 px-2">
-                <button className="flex justify-between items-center gap-2 shadow-lg px-6 py-2 rounded-lg text-gray-800">
+                <button className={`flex justify-between items-center gap-2 ${isReviewActive ? 'shadow-lg' : ''}  px-6 py-2 rounded-lg text-gray-800`}
+                  onClick={handleReviewClick}
+                >
                   <IoIosCube className="text-[14px]" />
                   <span className="text-[12px] font-semibold">TO REVIEW</span>
                 </button>
 
-                <button className="flex justify-between items-center gap-2 text-gray-800">
+                <button className={`flex justify-between ${isShortlistedActive ? 'shadow-lg' : ''} px-6 py-2 rounded-lg items-center gap-2 text-gray-800`}
+                  onClick={handleShortlistedClick}
+                >
                   <AiFillCopy className="text-[14px]" />
                   <span className="text-[12px] font-semibold">SHORTLISTED</span>
                 </button>
@@ -164,7 +193,7 @@ export default function Home() {
                                 <span className="text-[14px] text-gray-500">{candidate.email}</span>
                               </p>
                             </th>
-                            <td className="py-4 text-green-500 font-semibold">
+                            <td className={`py-4 text-${progressColor(candidate.score % 100)}-500 font-semibold`}>
                               {candidate.score % 100}%
                             </td>
                           </tr>
@@ -196,21 +225,21 @@ export default function Home() {
                   <div className="flex items-center justify-between gap-4">
                     <p className="text-xs font-semibold text-gray-500">Behavioural</p>
                     <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-200">
-                      <div className={`bg-${progressColor(selectedCandidate.behavioral)}-500 h-2 rounded-full`} style={{ width: `${(selectedCandidate.behavioral/10)*100}%` }} ></div>
+                      <div className={`bg-${progressColor(selectedCandidate.behavioral)}-500 h-2 rounded-full`} style={{ width: `${(selectedCandidate.behavioral / 10) * 100}%` }} ></div>
                     </div>
                     <p className={`text-xs text-${progressColor(selectedCandidate.behavioral)}-400 font-semibold`}>{selectedCandidate.behavioral}/10</p>
                   </div>
                   <div className="flex items-center justify-between gap-4">
                     <p className="text-xs font-semibold text-gray-500">Communication</p>
                     <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-200">
-                      <div className={`bg-${progressColor(selectedCandidate.communication)}-500 h-2 rounded-full`} style={{ width: `${(selectedCandidate.communication/10)*100}%` }} ></div>
+                      <div className={`bg-${progressColor(selectedCandidate.communication)}-500 h-2 rounded-full`} style={{ width: `${(selectedCandidate.communication / 10) * 100}%` }} ></div>
                     </div>
                     <p className={`text-xs text-${progressColor(selectedCandidate.communication)}-400 font-semibold`}>{selectedCandidate.communication}/10</p>
                   </div>
                   <div className="flex items-center justify-between gap-4">
                     <p className="text-xs font-semibold text-gray-500">Situation handling</p>
                     <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-200">
-                      <div className={`bg-${progressColor(selectedCandidate.situation_handling)}-500 h-2 rounded-full`} style={{ width: `${(selectedCandidate.situation_handling/10)*100}%` }} ></div>
+                      <div className={`bg-${progressColor(selectedCandidate.situation_handling)}-500 h-2 rounded-full`} style={{ width: `${(selectedCandidate.situation_handling / 10) * 100}%` }} ></div>
                     </div>
                     <p className={`text-xs text-${progressColor(selectedCandidate.situation_handling)}-400 font-semibold`}>{selectedCandidate.situation_handling}/10</p>
                   </div>
