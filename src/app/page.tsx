@@ -1,3 +1,5 @@
+'use client'
+
 import { FaCubes, FaHome } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { FaPencilAlt } from "react-icons/fa";
@@ -6,8 +8,21 @@ import { IoIosCube } from "react-icons/io";
 import { AiFillCopy } from "react-icons/ai";
 import Image from "next/image";
 import GirlProfile from '../../public/girl.jpg';
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [candidates, setCandidates] = useState([]);
+
+  useEffect(() => {
+    const candidatesData = async () => {
+      const query = await fetch("https://66358c3b415f4e1a5e24c85f.mockapi.io/candidates");
+      const response = await query.json();
+      console.log(response);
+      setCandidates(response);
+    }
+    candidatesData();
+  }, []);
+
   return (
     <main className="flex min-h-screen items-start justify-between px-6 py-4 bg-gray-100">
       <div className="flex flex-col justify-start items-start w-[15%]">
@@ -95,21 +110,23 @@ export default function Home() {
             </ul>
 
 
-            <div className="w-full">
-              <table className="w-full text-sm mt-2">
+            <div className="w-full h-80 overflow-scroll">
+              <table className="w-full text-sm mt-2 overflow-scroll">
                 <tbody className="w-full">
-                  <tr className="bg-gray-200 w-full flex  justify-between items-center px-3">
-                    <th scope="row" className="py-3 font-medium whitespace-nowrap flex justify-start items-center gap-2">
-                      <Image className="w-10 h-10 rounded-xl" src={GirlProfile} alt="Profile photo" width={50} height={50} />
-                      <p className="flex flex-col justify-between items-start">
-                        <span className="text-xs font-semibold">Saurav Singh</span>
-                        <span className="text-[14px] text-gray-500">saurav@gmail.com</span>
-                      </p>
-                    </th>
-                    <td className="py-4 text-green-500 font-semibold">
-                      78%
-                    </td>
-                  </tr>
+                  {candidates.map((candidate: { name: string, email: string, score: number }, index: number) => (
+                    <tr key={index} className="bg-gray-200 w-full flex  justify-between items-center px-3">
+                      <th scope="row" className="py-3 font-medium whitespace-nowrap flex justify-start items-center gap-2">
+                        <Image className="w-10 h-10 rounded-xl" src={GirlProfile} alt="Profile photo" width={50} height={50} />
+                        <p className="flex flex-col justify-between items-start">
+                          <span className="text-xs font-semibold">{candidate.name}</span>
+                          <span className="text-[14px] text-gray-500">{candidate.email}</span>
+                        </p>
+                      </th>
+                      <td className="py-4 text-green-500 font-semibold">
+                        {candidate.score % 100}%
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
